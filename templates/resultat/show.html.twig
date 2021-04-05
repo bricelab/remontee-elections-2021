@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resultat{% endblock %}
+
+{% block body %}
+    <h1>Resultat</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ resultat.id }}</td>
+            </tr>
+            <tr>
+                <th>Arrondissement</th>
+                <td>{{ resultat.arrondissement.nom }}</td>
+            </tr>
+            <tr>
+                <th>NomMandataire</th>
+                <td>{{ resultat.nomMandataire }}</td>
+            </tr>
+            <tr>
+                <th>PrenomsMandataire</th>
+                <td>{{ resultat.prenomsMandataire }}</td>
+            </tr>
+            <tr>
+                <th>TelephoneMandataire</th>
+                <td>{{ resultat.telephoneMandataire }}</td>
+            </tr>
+            <tr>
+                <th>NbVotants</th>
+                <td>{{ resultat.nbVotants }}</td>
+            </tr>
+            <tr>
+                <th>NbVoixRlc</th>
+                <td>{{ resultat.nbVoixRlc }}</td>
+            </tr>
+            <tr>
+                <th>NbVoixFcbe</th>
+                <td>{{ resultat.nbVoixFcbe }}</td>
+            </tr>
+            <tr>
+                <th>NbVoixDuoTT</th>
+                <td>{{ resultat.nbVoixDuoTT }}</td>
+            </tr>
+            <tr>
+                <th>NbNuls</th>
+                <td>{{ resultat.nbNuls }}</td>
+            </tr>
+            <tr>
+                <th>Observations</th>
+                <td>{{ resultat.observations }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ resultat.createdAt ? resultat.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ resultat.updatedAt ? resultat.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('resultat_index') }}">back to list</a>
+
+    <a href="{{ path('resultat_edit', {'id': resultat.id}) }}">edit</a>
+
+    {{ include('resultat/_delete_form.html.twig') }}
+{% endblock %}

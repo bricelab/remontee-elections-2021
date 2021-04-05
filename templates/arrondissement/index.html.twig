@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Arrondissement index{% endblock %}
+
+{% block body %}
+    <h1>Arrondissement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for arrondissement in arrondissements %}
+            <tr>
+                <td>{{ arrondissement.id }}</td>
+                <td>{{ arrondissement.nom }}</td>
+                <td>{{ arrondissement.createdAt ? arrondissement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ arrondissement.updatedAt ? arrondissement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('arrondissement_show', {'id': arrondissement.id}) }}">show</a>
+                    <a href="{{ path('arrondissement_edit', {'id': arrondissement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('arrondissement_new') }}">Create new</a>
+{% endblock %}

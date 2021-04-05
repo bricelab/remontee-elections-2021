@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Arrondissement{% endblock %}
+
+{% block body %}
+    <h1>Edit Arrondissement</h1>
+
+    {{ include('arrondissement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('arrondissement_index') }}">back to list</a>
+
+    {{ include('arrondissement/_delete_form.html.twig') }}
+{% endblock %}

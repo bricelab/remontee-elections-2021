@@ -1,0 +1,73 @@
+{% extends 'front_base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12">
+            {{ form_row(form.nomMandataire) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.prenomsMandataire) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.telephoneMandataire) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.departement) }}
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label class="" for="remontee_commune">Commune</label>
+                <select id="remontee_commune" name="remontee[commune]" class="form-select js-commune form-control">
+                    <option value="">--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label class="" for="remontee_departement">Arrondissement</label>
+                <select id="remontee_arrondissement" name="remontee[arrondissement]" class="form-select js-arrondissement form-control">
+                    <option value="">--</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row d-none js-resultat">
+        <div class="col-12">
+            {{ form_row(form.nbVotants) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.nbVoixRlc) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.nbVoixFcbe) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.nbVoixDuoTT) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.nbNuls) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.observations) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button type="submit" class="btn btn-success js-validate-btn" disabled>Valider</button>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>
+{% endblock %}
+

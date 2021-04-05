@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Arrondissement{% endblock %}
+
+{% block body %}
+    <h1>Create new Arrondissement</h1>
+
+    {{ include('arrondissement/_form.html.twig') }}
+
+    <a href="{{ path('arrondissement_index') }}">back to list</a>
+{% endblock %}
