@@ -17,7 +17,7 @@ class ResultatController extends AbstractController
     public function index(ResultatRepository $resultatRepository): Response
     {
         return $this->render('resultat/index.html.twig', [
-            'resultats' => $resultatRepository->findAll(),
+            'resultats' => $resultatRepository->findBy([], ['updatedAt' => 'DESC']),
         ]);
     }
 
@@ -74,6 +74,7 @@ class ResultatController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$resultat->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $resultat->getArrondissement()->setResultat(null);
             $entityManager->remove($resultat);
             $entityManager->flush();
         }

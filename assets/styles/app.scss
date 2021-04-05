@@ -1,4 +1,39 @@
+@import "app/custom";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/badge";
 @import "~bootstrap";
 body {
-    background-color: lightgray;
+    background-color: rgb(204, 211, 224); // rgb(86, 109, 153);
+}
+
+.wrapper {
+    width: 660px!important;
+}
+
+.header-card {
+    height: 160px!important;
+    background-image: url("../images/affiche-tt.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px !important;
+}
+
+.description-card {
+    height: auto;
+    border-radius: 10px !important;
+    border-top: 10px solid $primary !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+}
+
+.border-radius-10 {
+    border-radius: 10px !important;
+}
+
+@media screen and (max-width: 560px) {
+    .wrapper {
+        width: auto !important;
+    }
 }

@@ -21,7 +21,8 @@ $(document).ready(function () {
     });
     $('.js-commune').change(function () {
         const self = this;
-        fetchArrondissements(self)
+        const update = !!window.updateResult;
+        fetchArrondissements(self, update)
     });
     $('.js-arrondissement').change(function () {
         const self = this;

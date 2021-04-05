@@ -1,0 +1,71 @@
+{% extends 'front_base.html.twig' %}
+
+{% block title %}Remontée des votes - Présidentielles 2021{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="col-12 mt-3 bg-white p-3 border-white border header-card">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="col-12 mt-3 bg-white p-3 border-white border description-card">
+                <h1 class="h3">Remontée des votes - Présidentielles 2021</h1>
+                <p>
+                    Plateforme de remontée de données de vote pour le scrutin du 11 Avril 2021.
+                </p>
+                <p>
+                    <span class="text-danger">* Tous les champs sont obligatoires.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            {% include 'components/flash_messages.html.twig' %}
+        </div>
+    </div>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12">
+            <div class="col-12 mt-3 bg-white p-3 pb-4 border-white border border-radius-10">
+                <div class="col-12">
+                    {{ form_row(form.departement) }}
+                </div>
+
+                <div class="form-group mt-3">
+                    <label class="" for="modifier_remontee_start_commune">Choisissez la Commune</label>
+                    <select id="modifier_remontee_start_commune" name="modifier_remontee_start[commune]" class="form-select js-commune form-control">
+                        <option value="">--</option>
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <label class="" for="modifier_remontee_start_arrondissement">Choisissez l'Arrondissement</label>
+                    <select id="modifier_remontee_start_arrondissement" name="modifier_remontee_start[arrondissement]" class="form-select js-arrondissement form-control">
+                        <option value="">--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 mt-3 mb-5">
+                <div class="d-inline-block">
+                    <button type="submit" class="btn btn-primary js-validate-btn" disabled>Suivant</button>
+                </div>
+                <div class="mx-3 d-inline-block">
+                    <a href="{{ path('home') }}" class="">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.updateResult = true;
+    </script>
+    {{ parent() }}
+{% endblock %}

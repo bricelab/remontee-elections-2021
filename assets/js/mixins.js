@@ -42,7 +42,7 @@ export function fetchCommunes(element) {
     }
 }
 
-export function fetchArrondissements(element) {
+export function fetchArrondissements(element, update) {
     const value = element.value;
     const arrondissementElt = $('.js-arrondissement');
     const resultatElt = $('.js-resultat');
@@ -58,7 +58,9 @@ export function fetchArrondissements(element) {
                 validateElt.attr('disabled', 'disabled');
             },
             dataType: "json",
-            data: {},
+            data: JSON.stringify({
+                update
+            }),
             async: true,
             error: function (error) {
                 console.log(error);

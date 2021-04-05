@@ -74,10 +74,10 @@ class Arrondissement
         return $this->resultat;
     }
 
-    public function setResultat(Resultat $resultat): self
+    public function setResultat(?Resultat $resultat): self
     {
         // set the owning side of the relation if necessary
-        if ($resultat->getArrondissement() !== $this) {
+        if ($resultat && $resultat->getArrondissement() !== $this) {
             $resultat->setArrondissement($this);
         }
 

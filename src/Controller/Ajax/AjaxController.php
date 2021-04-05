@@ -33,7 +33,12 @@ class AjaxController extends AbstractController
     public function asyncArrondissement(Commune $commune, Request $request, ArrondissementRepository$repository, SerializerInterface $serializer): Response
     {
         if ($request->isXmlHttpRequest()) {
-            $arrondissements = $repository->findWithNoResultByCommune($commune);
+            $content = json_decode($request->getContent(), true);
+            if (isset($content['update']) && $content['update']) {
+                $arrondissements = $repository->findWithResultByCommune($commune);
+            } else {
+                $arrondissements = $repository->findWithNoResultByCommune($commune);
+            }
             return new JsonResponse(
                 $serializer->serialize(
                     $arrondissements,

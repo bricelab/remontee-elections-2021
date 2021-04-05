@@ -28,11 +28,6 @@ class Resultat
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $prenomsMandataire;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private ?string $telephoneMandataire;
 
     /**
@@ -84,18 +79,6 @@ class Resultat
     public function setNomMandataire(string $nomMandataire): self
     {
         $this->nomMandataire = $nomMandataire;
-
-        return $this;
-    }
-
-    public function getPrenomsMandataire(): ?string
-    {
-        return $this->prenomsMandataire;
-    }
-
-    public function setPrenomsMandataire(string $prenomsMandataire): self
-    {
-        $this->prenomsMandataire = $prenomsMandataire;
 
         return $this;
     }

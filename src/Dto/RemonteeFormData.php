@@ -10,8 +10,6 @@ class RemonteeFormData
 {
     public ?string $nomMandataire = null;
 
-    public ?string $prenomsMandataire = null;
-
     public ?string $telephoneMandataire = null;
 
     public ?int $nbVotants = 0;

@@ -1,0 +1,17 @@
+{% set flashes = app.flashes %}
+{% if flashes|length > 0 %}
+    {% for type, messages in flashes %}
+        {% for message in messages %}
+            {% if type == 'error' %}
+                {% set type = 'danger' %}
+                {% set title = 'Erreur' %}
+            {% elseif type == 'info' %}
+                {% set type = 'primary' %}
+                {% set title = 'Info' %}
+            {% endif %}
+            <div class="alert alert-{{ type }} border border-radius-10">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}

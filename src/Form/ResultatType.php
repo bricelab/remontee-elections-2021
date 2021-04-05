@@ -15,7 +15,6 @@ class ResultatType extends AbstractType
     {
         $builder
             ->add('nomMandataire')
-            ->add('prenomsMandataire')
             ->add('telephoneMandataire')
             ->add('nbVotants')
             ->add('nbVoixRlc')

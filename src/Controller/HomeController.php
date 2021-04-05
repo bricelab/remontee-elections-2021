@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Arrondissement;
 use App\Entity\Resultat;
+use App\Form\ModifierRemonteeStartType;
 use App\Form\RemonteeType;
 use App\Repository\ArrondissementRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,11 +38,57 @@ class HomeController extends AbstractController
                     $this->addFlash('success', 'Résultat ajouté avec succès !');
 
                     return $this->redirectToRoute('home');
+                } else {
+                    $this->addFlash('error', 'Choisissez un arrondissement valide svp !');
                 }
+            } else {
+                $this->addFlash('error', 'Choisissez un arrondissement valide svp !');
             }
         }
         return $this->render('home/index.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/modifier-un-resultat-start', name: 'update_resultat_start')]
+    public function updateStart(Request $request, ArrondissementRepository $repository): Response
+    {
+        $form = $this->createForm(ModifierRemonteeStartType::class)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $extraData = $form->getExtraData();
+
+            if (isset($extraData['arrondissement']) && $extraData['arrondissement']) {
+                $arrondissement = $repository->findOneBy(['id' => $extraData['arrondissement']]);
+                if ($arrondissement) {
+                    return $this->redirectToRoute('update_resultat_end', ['id' => $arrondissement->getId()]);
+                } else {
+                    $this->addFlash('error', 'Choisissez un arrondissement valide svp !');
+                }
+            } else {
+                $this->addFlash('error', 'Choisissez un arrondissement valide svp !');
+            }
+        }
+        return $this->render('home/update_start.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/modifier-un-resultat/{id}/end', name: 'update_resultat_end')]
+    public function updateEnd(Arrondissement $arrondissement, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(RemonteeType::class, $arrondissement->getResultat())->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            $this->addFlash('success', 'Résultat modifié avec succès !');
+
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('home/update_end.html.twig', [
+            'form' => $form->createView(),
+            'arrondissement' => $arrondissement,
         ]);
     }
 }

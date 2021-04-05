@@ -38,30 +38,17 @@
                 </div>
             </div>
             <div class="col-12 mt-3 bg-white p-3 pb-4 border-white border border-radius-10">
-                <div class="col-12">
+                <div class="col-12 d-none">
                     {{ form_row(form.departement) }}
                 </div>
-{#                <div class="col-12 mt-3">#}
-{#                    {{ form_row(form.commune) }}#}
-{#                </div>#}
-{#                <div class="col-12 mt-3">#}
-{#                    {{ form_row(form.arrondissement) }}#}
-{#                </div>#}
-
-                <div class="form-group mt-3">
-                    <label class="" for="remontee_commune">Choisissez la Commune</label>
-                    <select id="remontee_commune" name="remontee[commune]" class="form-select js-commune form-control">
-                        <option value="">--</option>
-                    </select>
-                </div>
-                <div class="form-group mt-3">
-                    <label class="" for="remontee_arrondissement">Choisissez l'Arrondissement</label>
-                    <select id="remontee_arrondissement" name="remontee[arrondissement]" class="form-select js-arrondissement form-control">
-                        <option value="">--</option>
+                <div class="form-group">
+                    <label class="" for="remontee_arrondissement">Arrondissement</label>
+                    <select id="remontee_arrondissement" name="remontee[arrondissement]" class="form-select form-control" disabled="disabled">
+                        <option value="{{ arrondissement.id }}" selected>{{ arrondissement.nom }}</option>
                     </select>
                 </div>
             </div>
-            <div class="col-12 mt-3 bg-white p-3 pb-4 border-white border border-radius-10 d-none js-resultat">
+            <div class="col-12 mt-3 bg-white p-3 pb-4 border-white border border-radius-10">
                 <div class="col-12">
                     {{ form_row(form.nbVotants) }}
                 </div>
@@ -83,10 +70,10 @@
             </div>
             <div class="col-12 mt-3 mb-5">
                 <div class="d-inline-block">
-                    <button type="submit" class="btn btn-primary js-validate-btn" disabled>Valider</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
                 </div>
                 <div class="mx-3 d-inline-block">
-                    <a href="{{ path('update_resultat_start') }}" class="">Modifier le résultat d'un arrondissement</a>
+                    <a href="{{ path('update_resultat_start') }}" class="">Retour</a>
                 </div>
             </div>
         </div>
