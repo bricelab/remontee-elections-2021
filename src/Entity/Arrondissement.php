@@ -40,6 +40,11 @@ class Arrondissement
      */
     private ?Resultat $resultat;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $nbInscrits;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,5 +94,17 @@ class Arrondissement
     public function __toString(): string
     {
         return (string) $this->nom;
+    }
+
+    public function getNbInscrits(): ?int
+    {
+        return $this->nbInscrits;
+    }
+
+    public function setNbInscrits(?int $nbInscrits): self
+    {
+        $this->nbInscrits = $nbInscrits;
+
+        return $this;
     }
 }

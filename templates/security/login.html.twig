@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta name="author" content="Brice Hessou">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Connexion</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('login') }}
+            <style>
+                .bd-placeholder-img {
+                    font-size: 1.125rem;
+                    text-anchor: middle;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    user-select: none;
+                }
+
+                @media (min-width: 768px) {
+                    .bd-placeholder-img-lg {
+                        font-size: 3.5rem;
+                    }
+                }
+            </style>
+
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('login') }}
+        {% endblock %}
+    </head>
+    <body class="text-center">
+        <main class="form-signin">
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+{#                <img class="mb-4" src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">#}
+
+                <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+
+                <div class="form-floating">
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus placeholder="name@example.com">
+                    <label for="inputEmail">Adresse mail</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" name="password" id="inputPassword" class="form-control" required placeholder="Password">
+                    <label for="inputPassword">Mot de passe</label>
+                </div>
+
+
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
+
+                {#Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html#}
+
+                {#<div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Rester connecté
+                    </label>
+                </div>#}
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit">
+                    Se connecter
+                </button>
+                <p class="mt-5 mb-3 text-muted">&copy; Bénin</p>
+            </form>
+        </main>
+    </body>
+</html>
+

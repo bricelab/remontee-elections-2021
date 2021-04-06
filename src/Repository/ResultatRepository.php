@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Resultat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Result;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,73 @@ class ResultatRepository extends ServiceEntityRepository
         parent::__construct($registry, Resultat::class);
     }
 
-    // /**
-    //  * @return Resultat[] Returns an array of Resultat objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function tauxRemonteeParCommune(int $id): array
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = <<<EOT
+SELECT COUNT(*) AS nb_count 
+FROM resultat r, arrondissement a, commune c, departement d
+WHERE r.arrondissement_id = a.id 
+AND a.commune_id = c.id 
+AND c.departement_id = d.id
+AND d.id = :id
+EOT;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
 
-    /*
-    public function findOneBySomeField($value): ?Resultat
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
     }
-    */
+
+    public function nbArrondissementParDepartement(int $id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = <<<EOT
+SELECT COUNT(*) AS nb_count 
+FROM arrondissement a, commune c, departement d
+WHERE a.commune_id = c.id 
+AND c.departement_id = d.id
+AND d.id = :id
+EOT;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function totalDesVoixObtenus(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = <<<EOT
+SELECT SUM(r.nb_votants) AS nb_votants, SUM(r.nb_voix_rlc) AS nb_voix_rlc,
+SUM(r.nb_voix_fcbe) AS nb_voix_fcbe, SUM(r.nb_voix_duo_tt) AS nb_voix_duo_tt, SUM(a.nb_inscrits) AS nb_inscrits 
+FROM resultat r, arrondissement a 
+WHERE r.arrondissement_id = a.id 
+EOT;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function totalDesVoixObtenusParDepartement(int $id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = <<<EOT
+SELECT SUM(r.nb_votants) AS nb_votants, SUM(r.nb_voix_rlc) AS nb_voix_rlc, 
+SUM(r.nb_voix_fcbe) AS nb_voix_fcbe, SUM(r.nb_voix_duo_tt) AS nb_voix_duo_tt, SUM(a.nb_inscrits) AS nb_inscrits 
+FROM resultat r, arrondissement a, commune c, departement d 
+WHERE r.arrondissement_id = a.id 
+AND a.commune_id = c.id 
+AND c.departement_id = d.id 
+AND d.id = :id
+EOT;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
 }

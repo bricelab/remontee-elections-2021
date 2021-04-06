@@ -53,6 +53,34 @@ class ArrondissementRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function findAllIdListByCommuneId(int $id)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id')
+            ->addSelect('a.nom')
+            ->where('a.commune = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function nbArrondissementParDepartement(int $id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = <<<EOT
+SELECT COUNT(*) AS nb_count 
+FROM arrondissement a, commune c, departement d
+WHERE a.commune_id = c.id 
+AND c.departement_id = d.id
+AND d.id = :id
+EOT;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
 
     /*
     public function findOneBySomeField($value): ?Arrondissement

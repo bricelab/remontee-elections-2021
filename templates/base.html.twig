@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Remontée des votes - Présidentielles 2021{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Brice Hessou">
         {% block stylesheets %}
+            <style>
+                .bd-placeholder-img {
+                    font-size: 1.125rem;
+                    text-anchor: middle;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    user-select: none;
+                }
+
+                @media (min-width: 768px) {
+                    .bd-placeholder-img-lg {
+                        font-size: 3.5rem;
+                    }
+                }
+            </style>
+
             {{ encore_entry_link_tags('admin') }}
         {% endblock %}
 
@@ -14,6 +30,15 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    {% include 'components/header.html.twig' %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include 'components/sidebar.html.twig' %}
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+    </div>
     </body>
 </html>
