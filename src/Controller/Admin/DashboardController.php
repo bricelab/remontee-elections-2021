@@ -21,10 +21,14 @@ class DashboardController extends AbstractController
 
         // TNombre d'arrondissement remontés
         $nbArrondissementRemontee = $doctrine->getRepository(Resultat::class)->count([]);
-        $nbArrondissementRestant = $doctrine->getRepository(Arrondissement::class)->count([]) - $nbArrondissementRemontee;
+        $nbTotal = $doctrine->getRepository(Arrondissement::class)->count([]);
+        $nbArrondissementRestant = $nbTotal - $nbArrondissementRemontee;
         $nbRemonteesPie = $chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
         $nbRemonteesPie->setData([
-            'labels' => ['Nombre de remontées', 'Nombre restant'],
+            'labels' => [
+                "Nombre de remontées ($nbArrondissementRemontee)",
+                "Nombre restant ($nbArrondissementRestant)",
+            ],
             'datasets' => [
                 [
                     'label' => 'Nombre d\'arrondissement remontés',
@@ -134,7 +138,7 @@ class DashboardController extends AbstractController
 //        dd($totauxVoix, $tendancesNationalesData, $suffrageExprimesTotal);
         $tendancesNationales = $chartBuilder->createChart(Chart::TYPE_PIE);
         $tendancesNationales->setData([
-            'labels' => ['RLC', 'FCBE', 'TT'],
+            'labels' => ['RLC ('.$tendancesNationalesData[0].'%)', 'FCBE ('.$tendancesNationalesData[1].'%)', 'TT ('.$tendancesNationalesData[2].'%)'],
             'datasets' => [
                 [
 //                    'label' => 'My First dataset',
