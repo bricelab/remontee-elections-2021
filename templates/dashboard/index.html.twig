@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Tableau de bord</h1>
+        <h1 class="h2">{{ 'Tableau de bord'|upper }}</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <a href="{{ path('dashboard') }}" class="btn btn-primary">
                 <i class="bi-arrow-clockwise"></i>
@@ -81,7 +81,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
-
-
+{% block meta %}
+    <meta http-equiv="refresh" content="30">
 {% endblock %}
