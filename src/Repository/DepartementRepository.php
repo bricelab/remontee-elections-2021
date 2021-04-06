@@ -19,6 +19,17 @@ class DepartementRepository extends ServiceEntityRepository
         parent::__construct($registry, Departement::class);
     }
 
+    public function findAllIdList()
+    {
+        return $this->createQueryBuilder('d')
+            ->select('d.id')
+            ->addSelect('d.nom')
+            ->orderBy('d.nom', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Departement[] Returns an array of Departement objects
     //  */

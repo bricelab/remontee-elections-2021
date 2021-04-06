@@ -36,6 +36,7 @@
         "symfony/string": "5.2.*",
         "symfony/translation": "5.2.*",
         "symfony/twig-bundle": "^5.2",
+        "symfony/ux-chartjs": "^1.2",
         "symfony/validator": "5.2.*",
         "symfony/web-link": "5.2.*",
         "symfony/webpack-encore-bundle": "^1.11",
@@ -44,6 +45,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "symfony/browser-kit": "^5.2",
         "symfony/css-selector": "^5.2",
         "symfony/debug-bundle": "^5.2",
