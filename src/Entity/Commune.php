@@ -31,6 +31,11 @@ class Commune
      */
     private ?Departement $departement;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $ce;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,5 +68,17 @@ class Commune
     public function __toString(): string
     {
         return (string) $this->nom;
+    }
+
+    public function getCe(): ?int
+    {
+        return $this->ce;
+    }
+
+    public function setCe(?int $ce): self
+    {
+        $this->ce = $ce;
+
+        return $this;
     }
 }
