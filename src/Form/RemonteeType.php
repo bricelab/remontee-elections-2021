@@ -8,6 +8,7 @@ use App\Dto\RemonteeFormData;
 use App\Entity\Arrondissement;
 use App\Entity\Departement;
 use App\Entity\Resultat;
+use App\Repository\DepartementRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,6 +25,17 @@ use Symfony\Component\Validator\Constraints\PositiveOrZero;
 
 class RemonteeType extends AbstractType
 {
+    private DepartementRepository $repository;
+
+    /**
+     * RemonteeType constructor.
+     * @param DepartementRepository $repository
+     */
+    public function __construct(DepartementRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -103,6 +115,7 @@ class RemonteeType extends AbstractType
             ->add('departement', EntityType::class, [
                 'label' => 'Votre département',
                 'class' => Departement::class,
+                'choices' => $this->repository->findBy([], ['nom' => 'ASC']),
                 'mapped' => false,
                 'required' => false,
                 'attr' => [
