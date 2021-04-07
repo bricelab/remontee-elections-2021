@@ -1,66 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Resultat{% endblock %}
 
 {% block body %}
-    <h1>Resultat</h1>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Arrondissement : {{ resultat.arrondissement.nom }}</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="{{ path('resultat_index') }}" class="btn btn-primary mx-2">
+                <i class="bi-backspace-fill"></i>
+            </a>
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('resultat_edit', {'id': resultat.id}) }}" class="btn btn-warning mx-2">
+                <i class="bi-pencil-fill"></i>
+            </a>
+            {{ include('resultat/_delete_form_button.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ resultat.id }}</td>
-            </tr>
-            <tr>
-                <th>Arrondissement</th>
-                <td>{{ resultat.arrondissement.nom }}</td>
-            </tr>
-            <tr>
-                <th>NOM et PRÉNOMS</th>
-                <td>{{ resultat.nomMandataire }}</td>
-            </tr>
-            <tr>
-                <th>TelephoneMandataire</th>
-                <td>{{ resultat.telephoneMandataire }}</td>
-            </tr>
-            <tr>
-                <th>NbVotants</th>
-                <td>{{ resultat.nbVotants }}</td>
-            </tr>
-            <tr>
-                <th>NbVoixRlc</th>
-                <td>{{ resultat.nbVoixRlc }}</td>
-            </tr>
-            <tr>
-                <th>NbVoixFcbe</th>
-                <td>{{ resultat.nbVoixFcbe }}</td>
-            </tr>
-            <tr>
-                <th>NbVoixDuoTT</th>
-                <td>{{ resultat.nbVoixDuoTT }}</td>
-            </tr>
-            <tr>
-                <th>NbNuls</th>
-                <td>{{ resultat.nbNuls }}</td>
-            </tr>
-            <tr>
-                <th>Observations</th>
-                <td>{{ resultat.observations }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ resultat.createdAt ? resultat.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ resultat.updatedAt ? resultat.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('resultat_index') }}">back to list</a>
-
-    <a href="{{ path('resultat_edit', {'id': resultat.id}) }}">edit</a>
-
-    {{ include('resultat/_delete_form.html.twig') }}
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card pt-3">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Ajouté le</th>
+                                    <td>{{ resultat.createdAt ? resultat.createdAt|date('d/m/Y à H:i:s') : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Département</th>
+                                    <td>{{ resultat.arrondissement.commune.departement.nom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Commune</th>
+                                    <td>{{ resultat.arrondissement.commune.nom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Arrondissement</th>
+                                    <td>{{ resultat.arrondissement.nom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nom et prénoms du mandataire</th>
+                                    <td>{{ resultat.nomMandataire }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Numéro de téléphone du mandataire</th>
+                                    <td>{{ resultat.telephoneMandataire }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombre de votants</th>
+                                    <td>{{ resultat.nbVotants }}</td>
+                                </tr>
+                                <tr>
+                                    <th>RLC - KOHOUE & AGOSSA</th>
+                                    <td>{{ resultat.nbVoixRlc }}</td>
+                                </tr>
+                                <tr>
+                                    <th>FCBE - DJIMBA & HOUNKPE</th>
+                                    <td>{{ resultat.nbVoixFcbe }}</td>
+                                </tr>
+                                <tr>
+                                    <th>TT - TALON & TALATA</th>
+                                    <td>{{ resultat.nbVoixDuoTT }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Bulletins nuls</th>
+                                    <td>{{ resultat.nbNuls }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Observations</th>
+                                    <td>{{ resultat.observations }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -5,11 +5,18 @@ namespace App\Controller\Admin;
 use App\Entity\Utilisateur;
 use App\Form\UtilisateurType;
 use App\Repository\UtilisateurRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class UtilisateurController
+ * @package App\Controller\Admin
+ * @IsGranted("ROLE_SUPER_ADMIN")
+ */
 #[Route('/admin/utilisateur')]
 class UtilisateurController extends AbstractController
 {
@@ -17,23 +24,30 @@ class UtilisateurController extends AbstractController
     public function index(UtilisateurRepository $utilisateurRepository): Response
     {
         return $this->render('utilisateur/index.html.twig', [
-            'utilisateurs' => $utilisateurRepository->findAll(),
+            'utilisateurs' => $utilisateurRepository->findBy([], ['nom' => 'ASC']),
         ]);
     }
 
     #[Route('/new', name: 'utilisateur_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
     {
         $utilisateur = new Utilisateur();
         $form = $this->createForm(UtilisateurType::class, $utilisateur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($utilisateur);
-            $entityManager->flush();
+            $plainPassword = $form->get('plainPassword')->getData();
 
-            return $this->redirectToRoute('utilisateur_index');
+            if ($plainPassword) {
+                $utilisateur->setPassword($encoder->encodePassword($utilisateur, $plainPassword));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($utilisateur);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('utilisateur_index');
+            } else {
+                $this->addFlash('error', 'Entrer un mot de passe valide.');
+            }
         }
 
         return $this->render('utilisateur/new.html.twig', [
@@ -51,12 +65,16 @@ class UtilisateurController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'utilisateur_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Utilisateur $utilisateur): Response
+    public function edit(Request $request, Utilisateur $utilisateur, UserPasswordEncoderInterface $encoder): Response
     {
         $form = $this->createForm(UtilisateurType::class, $utilisateur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $form->get('plainPassword')->getData();
+            if ($plainPassword) {
+                $utilisateur->setPassword($encoder->encodePassword($utilisateur, $plainPassword));
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('utilisateur_index');

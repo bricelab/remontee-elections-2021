@@ -5,12 +5,18 @@ namespace App\Controller\Admin;
 use App\Entity\Arrondissement;
 use App\Entity\Departement;
 use App\Entity\Resultat;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
+/**
+ * Class DashboardController
+ * @package App\Controller\Admin
+ * @IsGranted("ROLE_USER")
+ */
 #[Route('/admin')]
 class DashboardController extends AbstractController
 {

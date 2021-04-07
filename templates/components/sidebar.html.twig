@@ -1,13 +1,15 @@
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
     <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_USER') %}
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ path('dashboard') }}">
                     <span class="bi-grid-fill"></span>
                     Tableau de bord
                 </a>
             </li>
+            {% endif %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('departement_index') }}">
                     <span class="bi-lock-fill"></span>
@@ -26,6 +28,8 @@
                     Arrondissements
                 </a>
             </li>
+            {% endif %}
+            {% if is_granted('ROLE_USER') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('resultat_index') }}">
                     <span class="bi-lock-fill"></span>

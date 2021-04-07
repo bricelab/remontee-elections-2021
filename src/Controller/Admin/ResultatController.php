@@ -5,11 +5,17 @@ namespace App\Controller\Admin;
 use App\Entity\Resultat;
 use App\Form\ResultatType;
 use App\Repository\ResultatRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ResultatController
+ * @package App\Controller\Admin
+ * @IsGranted("ROLE_USER")
+ */
 #[Route('/admin/resultat')]
 class ResultatController extends AbstractController
 {
@@ -21,6 +27,11 @@ class ResultatController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     * @IsGranted("ROLE_ADMIN")
+     */
     #[Route('/new', name: 'resultat_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -51,6 +62,12 @@ class ResultatController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Resultat $resultat
+     * @return Response
+     * @IsGranted("ROLE_ADMIN")
+     */
     #[Route('/{id}/edit', name: 'resultat_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Resultat $resultat): Response
     {
@@ -69,6 +86,12 @@ class ResultatController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Resultat $resultat
+     * @return Response
+     * @IsGranted("ROLE_ADMIN")
+     */
     #[Route('/{id}', name: 'resultat_delete', methods: ['POST'])]
     public function delete(Request $request, Resultat $resultat): Response
     {

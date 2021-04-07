@@ -5,11 +5,17 @@ namespace App\Controller\Admin;
 use App\Entity\Commune;
 use App\Form\CommuneType;
 use App\Repository\CommuneRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CommuneController
+ * @package App\Controller\Admin
+ * @IsGranted("ROLE_SUPER_ADMIN")
+ */
 #[Route('/admin/commune')]
 class CommuneController extends AbstractController
 {

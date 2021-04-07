@@ -34,7 +34,7 @@ class Commune
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $ce;
+    private ?int $ce;
 
     public function getId(): ?int
     {

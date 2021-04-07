@@ -1,11 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Resultat{% endblock %}
-
 {% block body %}
-    <h1>Create new Resultat</h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Nouveau résultat remonté</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ path('resultat_index') }}" class="btn btn-primary mx-2">
+            <i class="bi-backspace-fill"></i>
+        </a>
+    </div>
+</div>
 
-    {{ include('resultat/_form.html.twig') }}
-
-    <a href="{{ path('resultat_index') }}">back to list</a>
+<div class="row mt-3 mb-5">
+    <div class="col-12">
+        <div class="card pt-3">
+            <div class="card-body">
+                {{ include('resultat/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

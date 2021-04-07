@@ -5,11 +5,17 @@ namespace App\Controller\Admin;
 use App\Entity\Arrondissement;
 use App\Form\ArrondissementType;
 use App\Repository\ArrondissementRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ArrondissementController
+ * @package App\Controller\Admin
+ * @IsGranted("ROLE_SUPER_ADMIN")
+ */
 #[Route('/admin/arrondissement')]
 class ArrondissementController extends AbstractController
 {

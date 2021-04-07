@@ -18,45 +18,4 @@ class CommuneRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commune::class);
     }
-
-    public function findAllIdListByDepartementId(int $id)
-    {
-        return $this->createQueryBuilder('c')
-            ->select('c.id')
-            ->addSelect('c.nom')
-            ->where('c.departement = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    // /**
-    //  * @return Commune[] Returns an array of Commune objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Commune
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
