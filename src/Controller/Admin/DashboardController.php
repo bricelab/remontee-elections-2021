@@ -54,7 +54,7 @@ class DashboardController extends AbstractController
         $repo = $doctrine->getRepository(Resultat::class);
         foreach ($departementIds as $departementId) {
             $id = $departementId['id'];
-            $label[] = $departementId['nom'];
+            $label[] = strtoupper($departementId['nom']);
 
             $nbRemontees = $repo->tauxRemonteeParCommune($id)[0]['nb_count'];
             $nbArrondissement = $repo->nbArrondissementParDepartement($id)[0]['nb_count'];
@@ -138,7 +138,11 @@ class DashboardController extends AbstractController
 //        dd($totauxVoix, $tendancesNationalesData, $suffrageExprimesTotal);
         $tendancesNationales = $chartBuilder->createChart(Chart::TYPE_PIE);
         $tendancesNationales->setData([
-            'labels' => ['RLC ('.$tendancesNationalesData[0].'%)', 'FCBE ('.$tendancesNationalesData[1].'%)', 'TT ('.$tendancesNationalesData[2].'%)'],
+            'labels' => [
+                'RLC - KOHOUE & AGOSSA ('.$tendancesNationalesData[0].'%)',
+                'FCBE - DJIMBA & HOUNKPE ('.$tendancesNationalesData[1].'%)',
+                'TT - TALON & TALATA ('.$tendancesNationalesData[2].'%)'
+            ],
             'datasets' => [
                 [
 //                    'label' => 'My First dataset',
@@ -179,6 +183,8 @@ class DashboardController extends AbstractController
                 ],
             ],
         ]);
+        /** @var Resultat[]|null $dernieresRemontees */
+        $dernieresRemontees = $repo->findBy([], ['createdAt' => 'DESC'], 20, 0);
         return $this->render('dashboard/index.html.twig', [
 //            'chart' => $chart,
             'tauxParticipation' => $tauxParticipation,
@@ -186,6 +192,7 @@ class DashboardController extends AbstractController
             'tauxRemonntee' => $tauxRemonntee,
             'voixDuos' => $voixDuos,
             'tendancesNationales' => $tendancesNationales,
+            'dernieresRemontees' => $dernieresRemontees,
         ]);
     }
 }
