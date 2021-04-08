@@ -28,6 +28,7 @@
                                     <th></th>
                                     <th>Date</th>
                                     <th>Département</th>
+                                    <th>CE</th>
                                     <th>Commune</th>
                                     <th>Arrondissement</th>
                                     <th>Inscrits</th>
@@ -59,6 +60,7 @@
                                     </td>
                                     <td>{{ resultat.createdAt ? resultat.createdAt|date('d/m/Y H:i:s') : '' }}</td>
                                     <td>{{ resultat.arrondissement.commune.departement.nom|upper }}</td>
+                                    <td>{{ resultat.arrondissement.commune.ce }}</td>
                                     <td>{{ resultat.arrondissement.commune.nom|upper }}</td>
                                     <td>{{ resultat.arrondissement.nom|upper }}</td>
                                     <td>{{ resultat.arrondissement.nbInscrits }}</td>
@@ -71,7 +73,7 @@
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="11" class="text-center">Aucun résultat disponible.</td>
+                                    <td colspan="12" class="text-center">Aucun résultat disponible.</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
