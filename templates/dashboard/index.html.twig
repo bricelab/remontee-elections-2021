@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="col-lg-4 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <div class="col-12">
@@ -26,35 +26,19 @@
 
             </div>
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="col-lg-4 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <div class="col-12">
-                        <h3 class="h6 text-center text-uppercase">Taux de remontée et de participation par département</h3>
+                        <h3 class="h6 text-center text-uppercase">Taux de participation</h3>
                     </div>
                     <div class="col-12">
-                        {{ render_chart(tauxRemonntee) }}
+                        {{ render_chart(tauxParticipation) }}
                     </div>
                 </div>
-
             </div>
         </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-lg-6 col-md-12 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-12">
-                        <h3 class="h6 text-center text-uppercase">Tendances par département</h3>
-                    </div>
-                    <div class="col-12">
-                        {{ render_chart(voixDuos) }}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="col-lg-4 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <div class="col-12">
@@ -68,71 +52,85 @@
             </div>
         </div>
     </div>
-
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h2>Dernières remontées</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-sm">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Date</th>
-                                <th>Département</th>
-                                <th>Commune</th>
-                                <th>Arrondissement</th>
-                                <th>Votants</th>
-                                <th>RLC</th>
-                                <th>FCBE</th>
-                                <th>Duo Talon.Talata</th>
-                                <th>Votes nuls</th>
-                                <th>Observations</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for remontee in dernieresRemontees %}
-                                <tr>
-                                    <td>{{ loop.index }}</td>
-                                    <td>{{ remontee.createdAt ? remontee.createdAt|date('d/m/Y H:i:s') : '' }}</td>
-                                    <td>{{ remontee.arrondissement.commune.departement.nom|upper }}</td>
-                                    <td>{{ remontee.arrondissement.commune.nom|upper }}</td>
-                                    <td>{{ remontee.arrondissement.nom|upper }}</td>
-                                    <td>{{ remontee.nbVotants }}</td>
-                                    <td>{{ remontee.nbVoixRlc }}</td>
-                                    <td>{{ remontee.nbVoixFcbe }}</td>
-                                    <td>{{ remontee.nbVoixDuoTT }}</td>
-                                    <td>{{ remontee.nbNuls }}</td>
-                                    <td>{{ remontee.observations }}</td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="11" class="text-center">Aucun résultat disponible.</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <div class="row mt-3 mb-5">
-        <div class="col-12">
+        <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <div class="col-12">
-                        <h3 class="h6 text-center text-uppercase">Taux de participation</h3>
+                        <h3 class="h6 text-center text-uppercase">Taux de remontée et de participation par département</h3>
                     </div>
                     <div class="col-12">
-                        {{ render_chart(tauxParticipation) }}
+                        {{ render_chart(tauxRemonntee) }}
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-12">
+                        <h3 class="h6 text-center text-uppercase">Tendances par département</h3>
+                    </div>
+                    <div class="col-12">
+                        {{ render_chart(voixDuos) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
+
+{#    <div class="row mt-3 mb-5">#}
+{#        <div class="col-12">#}
+{#            <div class="card">#}
+{#                <div class="card-body">#}
+{#                    <h2>Dernières remontées</h2>#}
+{#                    <div class="table-responsive">#}
+{#                        <table class="table table-striped table-sm">#}
+{#                            <thead>#}
+{#                            <tr>#}
+{#                                <th>#</th>#}
+{#                                <th>Date</th>#}
+{#                                <th>Département</th>#}
+{#                                <th>Commune</th>#}
+{#                                <th>Arrondissement</th>#}
+{#                                <th>Inscrits</th>#}
+{#                                <th>Votants</th>#}
+{#                                <th>RLC</th>#}
+{#                                <th>FCBE</th>#}
+{#                                <th>Duo Talon.Talata</th>#}
+{#                                <th>Votes nuls</th>#}
+{#                                <th>Observations</th>#}
+{#                            </tr>#}
+{#                            </thead>#}
+{#                            <tbody>#}
+{#                            {% for remontee in dernieresRemontees %}#}
+{#                                <tr>#}
+{#                                    <td>{{ loop.index }}</td>#}
+{#                                    <td>{{ remontee.createdAt ? remontee.createdAt|date('d/m/Y H:i:s') : '' }}</td>#}
+{#                                    <td>{{ remontee.arrondissement.commune.departement.nom|upper }}</td>#}
+{#                                    <td>{{ remontee.arrondissement.commune.nom|upper }}</td>#}
+{#                                    <td>{{ remontee.arrondissement.nom|upper }}</td>#}
+{#                                    <td>{{ remontee.arrondissement.nbInscrits }}</td>#}
+{#                                    <td>{{ remontee.nbVotants }}</td>#}
+{#                                    <td>{{ remontee.nbVoixRlc }}</td>#}
+{#                                    <td>{{ remontee.nbVoixFcbe }}</td>#}
+{#                                    <td>{{ remontee.nbVoixDuoTT }}</td>#}
+{#                                    <td>{{ remontee.nbNuls }}</td>#}
+{#                                    <td>{{ remontee.observations }}</td>#}
+{#                                </tr>#}
+{#                            {% else %}#}
+{#                                <tr>#}
+{#                                    <td colspan="11" class="text-center">Aucun résultat disponible.</td>#}
+{#                                </tr>#}
+{#                            {% endfor %}#}
+{#                            </tbody>#}
+{#                        </table>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 {% endblock %}
 
 {% block meta %}

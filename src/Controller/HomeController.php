@@ -29,15 +29,20 @@ class HomeController extends AbstractController
             if (isset($extraData['arrondissement']) && $extraData['arrondissement']) {
                 $arrondissement = $repository->findOneBy(['id' => $extraData['arrondissement']]);
                 if ($arrondissement) {
-                    $resultat->setArrondissement($arrondissement);
-                    $arrondissement->setResultat($resultat);
+                    $sommeVoix = $resultat->getNbNuls() + $resultat->getNbVoixDuoTT() + $resultat->getNbVoixFcbe() + $resultat->getNbVoixRlc();
+                    if ($arrondissement->getNbInscrits() >= $resultat->getNbVotants() && $sommeVoix === $resultat->getNbVotants()) {
+                        $resultat->setArrondissement($arrondissement);
+                        $arrondissement->setResultat($resultat);
 
-                    $em->persist($resultat);
-                    $em->flush();
+                        $em->persist($resultat);
+                        $em->flush();
 
-                    $this->addFlash('success', 'Résultat ajouté avec succès !');
+                        $this->addFlash('success', 'Résultat ajouté avec succès !');
 
-                    return $this->redirectToRoute('home');
+                        return $this->redirectToRoute('home');
+                    } else {
+                        $this->addFlash('error', 'Les données entrées ne sont pas cohérentes !');
+                    }
                 } else {
                     $this->addFlash('error', 'Choisissez un arrondissement valide svp !');
                 }
@@ -77,14 +82,20 @@ class HomeController extends AbstractController
     #[Route('/modifier-un-resultat/{id}/end', name: 'update_resultat_end')]
     public function updateEnd(Arrondissement $arrondissement, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(RemonteeType::class, $arrondissement->getResultat())->handleRequest($request);
+        $resultat = $arrondissement->getResultat();
+        $form = $this->createForm(RemonteeType::class, $resultat)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
+            $sommeVoix = $resultat->getNbNuls() + $resultat->getNbVoixDuoTT() + $resultat->getNbVoixFcbe() + $resultat->getNbVoixRlc();
+            if ($arrondissement->getNbInscrits() >= $resultat->getNbVotants() && $sommeVoix === $resultat->getNbVotants()) {
+                $em->flush();
 
-            $this->addFlash('success', 'Résultat modifié avec succès !');
+                $this->addFlash('success', 'Résultat modifié avec succès !');
 
-            return $this->redirectToRoute('home');
+                return $this->redirectToRoute('home');
+            } else {
+                $this->addFlash('error', 'Les données entrées ne sont pas cohérentes !');
+            }
         }
         return $this->render('home/update_end.html.twig', [
             'form' => $form->createView(),

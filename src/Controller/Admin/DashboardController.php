@@ -40,7 +40,7 @@ class DashboardController extends AbstractController
                     'label' => 'Nombre d\'arrondissement remontés',
                     'backgroundColor' => [
                         'rgb(172, 31, 207)',
-                        'rgb(30, 12, 22)',
+//                        '#c4c6ca',
                     ],
 //                    'borderColor' => 'rgb(255, 99, 132)',
                     'data' => [$nbArrondissementRemontee, $nbArrondissementRestant],
@@ -80,13 +80,13 @@ class DashboardController extends AbstractController
             'datasets' => [
                 [
                     'label' => 'Taux de remontée',
-                    'backgroundColor' => 'rgb(174, 5, 38)',
+                    'backgroundColor' => 'rgb(172, 31, 207)',
 //                    'borderColor' => 'rgb(255, 99, 132)',
                     'data' => $tauxRemonnteeParDep,
                 ],
                 [
                     'label' => 'Taux de participation',
-                    'backgroundColor' => 'rgb(233, 183, 33)',
+                    'backgroundColor' => 'rgb(2, 179, 179)',
 //                    'borderColor' => 'rgb(255, 99, 132)',
                     'data' => $tauxParticipationParDep,
                 ],
@@ -145,9 +145,9 @@ class DashboardController extends AbstractController
         $tendancesNationales = $chartBuilder->createChart(Chart::TYPE_PIE);
         $tendancesNationales->setData([
             'labels' => [
-                'RLC - KOHOUE & AGOSSA ('.$tendancesNationalesData[0].'%)',
-                'FCBE - DJIMBA & HOUNKPE ('.$tendancesNationalesData[1].'%)',
-                'TT - TALON & TALATA ('.$tendancesNationalesData[2].'%)'
+                'RLC ('.$tendancesNationalesData[0].'%)',
+                'FCBE ('.$tendancesNationalesData[1].'%)',
+                'TALON.TALATA ('.$tendancesNationalesData[2].'%)'
             ],
             'datasets' => [
                 [
@@ -165,32 +165,30 @@ class DashboardController extends AbstractController
         ]);
 
         // Taux de participation
+//        dd($totauxVoix);
         $tauxParticipationData = intval($totauxVoix['nb_inscrits']) > 0 ? round(intval($totauxVoix['nb_votants']) * 100 / intval($totauxVoix['nb_inscrits']), 2) : 0;
-        $tauxParticipation = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $tauxAbstentionData = 100 - $tauxParticipationData;
+        $tauxParticipation = $chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
         $tauxParticipation->setData([
-            'labels' => ["$tauxParticipationData%"],
+            'labels' => [
+                "Votants ($tauxParticipationData%)",
+                "Abstention ($tauxAbstentionData%)",
+            ],
             'datasets' => [
                 [
-                    'label' => 'Pourcentage de votants',
+                    'label' => 'Taux de participation',
                     'backgroundColor' => [
-                        'rgb(9, 229, 229)',
+                        'rgb(2, 179, 179)',
+//                        '#c4c6ca',
                     ],
 //                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [$tauxParticipationData],
+                    'data' => [$tauxParticipationData, $tauxAbstentionData],
                     'hoverOffset' => 4,
                 ],
             ],
         ]);
-
-        $tauxParticipation->setOptions([
-            'scales' => [
-                'yAxes' => [
-                    ['ticks' => ['min' => 0, 'max' => 100]],
-                ],
-            ],
-        ]);
         /** @var Resultat[]|null $dernieresRemontees */
-        $dernieresRemontees = $repo->findBy([], ['createdAt' => 'DESC'], 20, 0);
+//        $dernieresRemontees = $repo->findBy([], ['createdAt' => 'DESC'], 20, 0);
         return $this->render('dashboard/index.html.twig', [
 //            'chart' => $chart,
             'tauxParticipation' => $tauxParticipation,
@@ -198,7 +196,7 @@ class DashboardController extends AbstractController
             'tauxRemonntee' => $tauxRemonntee,
             'voixDuos' => $voixDuos,
             'tendancesNationales' => $tendancesNationales,
-            'dernieresRemontees' => $dernieresRemontees,
+//            'dernieresRemontees' => $dernieresRemontees,
         ]);
     }
 }
