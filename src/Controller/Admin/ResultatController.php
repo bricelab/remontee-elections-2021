@@ -25,11 +25,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ResultatController extends AbstractController
 {
     #[Route('/{page<\d+>?1}/list', name: 'resultat_index', methods: ['GET'])]
-    public function index(int $page, ResultatRepository $resultatRepository): Response
+    public function index(int $page, Request $request, ResultatRepository $resultatRepository): Response
     {
+        $q = $request->query->get('q');
+        $paginator = null;
+        if ($q) {
+            $paginator = $resultatRepository->searchPaginated($q, $page);
+        } else {
+            $paginator = $resultatRepository->findAllPaginated($page);
+        }
         return $this->render('resultat/index.html.twig', [
 //            'resultats' => $resultatRepository->findBy([], ['updatedAt' => 'DESC']),
-            'paginator' => $resultatRepository->findAllPaginated($page),
+            'paginator' => $paginator,
         ]);
     }
 

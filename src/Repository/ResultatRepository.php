@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Data\OrmPaginator;
+use App\Entity\Arrondissement;
 use App\Entity\Resultat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Driver\Exception as DriverException;
@@ -116,6 +117,19 @@ class ResultatRepository extends ServiceEntityRepository
     public function findAllPaginated(int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
     {
         $query = $this->createQueryBuilder('r')
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return (new OrmPaginator($query))->paginate($page, $pageSize);
+    }
+
+    public function searchPaginated(string $q, int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->join('r.arrondissement', 'a')
+            ->andWhere('UPPER(a.nom) like :q')
+            ->setParameter('q', '%'. strtoupper($q) .'%')
             ->orderBy('r.createdAt', 'DESC')
             ->getQuery()
         ;
