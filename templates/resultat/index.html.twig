@@ -3,14 +3,18 @@
 {% block body %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Remontée des résultats par arrondissement</h1>
-        {% if is_granted('ROLE_ADMIN') %}
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="{{ path('resultat_new') }}" class="btn btn-success fw-bold">
-                <i class="bi-plus fw-bold"></i>
-{#                Nouveau#}
+        <div class="btn-toolbar mb-2 pt-2">
+            <a href="{{ path('resultat_export_csv') }}" class="btn btn-primary">
+                <i class="bi-save2 fw-bold"></i>
+                Exporter
             </a>
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('resultat_new') }}" class="btn btn-success ms-2">
+                <i class="bi-plus fw-bold"></i>
+                Nouveau
+            </a>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
 
     <div class="row mt-3">
@@ -33,7 +37,7 @@
                                     <th>Duo Talon.Talata</th>
                                     <th>Votes nuls</th>
                                     <th>Observations</th>
-                                    <th></th>
+{#                                    <th></th>#}
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,7 +67,7 @@
                                     <td>{{ resultat.nbVoixDuoTT }}</td>
                                     <td>{{ resultat.nbNuls }}</td>
                                     <td>{{ resultat.observations }}</td>
-                                    <td>
+{#                                    <td>#}
 {#                                        <a href="{{ path('resultat_show', {'id': resultat.id}) }}" class="btn btn-primary">#}
 {#                                            <i class="bi-eye-fill"></i>#}
 {#                                            Détails#}
@@ -74,11 +78,11 @@
 {#                                            Modifier#}
 {#                                        </a>#}
 {#                                        {% endif %}#}
-                                    </td>
+{#                                    </td>#}
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="12" class="text-center">Aucun résultat disponible.</td>
+                                    <td colspan="11" class="text-center">Aucun résultat disponible.</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
