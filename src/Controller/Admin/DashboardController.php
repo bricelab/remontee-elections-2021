@@ -62,7 +62,7 @@ class DashboardController extends AbstractController
             $id = $departementId['id'];
             $label[] = strtoupper($departementId['nom']);
 
-            $nbRemontees = $repo->tauxRemonteeParCommune($id)[0]['nb_count'];
+            $nbRemontees = $repo->tauxRemonteeParDepartement($id)[0]['nb_count'];
             $nbArrondissement = $repo->nbArrondissementParDepartement($id)[0]['nb_count'];
             $tauxRemonnteeParDep[] = $nbArrondissement > 0 ? round($nbRemontees * 100 / $nbArrondissement) : 0;
 

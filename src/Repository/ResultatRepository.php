@@ -34,7 +34,7 @@ class ResultatRepository extends ServiceEntityRepository
      * @return array
      * @throws DriverException|Exception
      */
-    public function tauxRemonteeParCommune(int $id): array
+    public function tauxRemonteeParDepartement(int $id): array
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = <<<EOT
