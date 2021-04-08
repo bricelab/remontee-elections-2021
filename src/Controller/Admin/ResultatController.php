@@ -105,7 +105,7 @@ class ResultatController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_ADMIN")
      */
-    #[Route('/{id}', name: 'resultat_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'resultat_delete', methods: ['DELETE'])]
     public function delete(Request $request, Resultat $resultat): Response
     {
         if ($this->isCsrfTokenValid('delete'.$resultat->getId(), $request->request->get('_token'))) {
@@ -128,7 +128,6 @@ class ResultatController extends AbstractController
     public function exportToCsv(ResultatRepository $repository): Response
     {
         $resultats = $repository->findAll();
-//        dd($resultats);
 
         $csvWriter = Writer::createFromFileObject(new SplTempFileObject());
 
@@ -192,5 +191,28 @@ class ResultatController extends AbstractController
         $response->setCallback($contentCallback);
 
         return $response;
+    }
+
+
+    /**
+     * @param Request $request
+     * @param ResultatRepository $repository
+     * @return Response
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     */
+    #[Route('/purge-all', name: 'resultat_purge', methods: ['PURGE'])]
+    public function purge(Request $request, ResultatRepository $repository): Response
+    {
+        if ($this->isCsrfTokenValid('purge-all-by-super-admin', $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $resultats = $repository->findAll();
+            foreach ($resultats as $resultat) {
+                $resultat->getArrondissement()->setResultat(null);
+                $entityManager->remove($resultat);
+            }
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('resultat_index');
     }
 }

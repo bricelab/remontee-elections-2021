@@ -1,0 +1,10 @@
+<form
+        method="post"
+        action="{{ path('resultat_purge') }}"
+        onsubmit="return confirm('Êtes-vous certain de vouloir supprimer tous les éléments svp ?');"
+        class="d-inline-block"
+>
+    <input type="hidden" name="_token" value="{{ csrf_token('purge-all-by-super-admin') }}">
+    <input type="hidden" name="_method" value="PURGE">
+    <button class="d-inline-block btn btn-danger"><i class="bi-trash-fill"></i> Vider</button>
+</form>

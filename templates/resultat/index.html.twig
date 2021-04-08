@@ -9,10 +9,13 @@
                 Exporter
             </a>
             {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('resultat_new') }}" class="btn btn-success ms-2">
+            <a href="{{ path('resultat_new') }}" class="btn btn-success ms-2 me-2">
                 <i class="bi-plus fw-bold"></i>
                 Nouveau
             </a>
+            {% endif %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {{ include('resultat/_purge_form.html.twig') }}
             {% endif %}
         </div>
     </div>
