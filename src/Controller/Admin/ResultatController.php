@@ -24,11 +24,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/resultat')]
 class ResultatController extends AbstractController
 {
-    #[Route('/', name: 'resultat_index', methods: ['GET'])]
-    public function index(ResultatRepository $resultatRepository): Response
+    #[Route('/{page<\d+>?1}/list', name: 'resultat_index', methods: ['GET'])]
+    public function index(int $page, ResultatRepository $resultatRepository): Response
     {
         return $this->render('resultat/index.html.twig', [
-            'resultats' => $resultatRepository->findBy([], ['updatedAt' => 'DESC']),
+//            'resultats' => $resultatRepository->findBy([], ['updatedAt' => 'DESC']),
+            'paginator' => $resultatRepository->findAllPaginated($page),
         ]);
     }
 

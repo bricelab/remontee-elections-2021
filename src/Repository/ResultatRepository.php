@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\OrmPaginator;
 use App\Entity\Resultat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Driver\Exception as DriverException;
@@ -16,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ResultatRepository extends ServiceEntityRepository
 {
+    const PAGE_SIZE = 20;
+
     /**
      * ResultatRepository constructor.
      * @param ManagerRegistry $registry
@@ -109,4 +112,15 @@ class ResultatRepository extends ServiceEntityRepository
 
         return $stmt->fetchAllAssociative();
     }
+
+    public function findAllPaginated(int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return (new OrmPaginator($query))->paginate($page, $pageSize);
+    }
+
 }

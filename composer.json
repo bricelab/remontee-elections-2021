@@ -99,5 +99,7 @@
             "allow-contrib": false,
             "require": "5.2.*"
         }
-    }
+    },
+    "name": "bricelab/remontee-elections-2021",
+    "description": ""
 }

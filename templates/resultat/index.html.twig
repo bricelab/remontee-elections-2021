@@ -41,7 +41,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            {% for resultat in resultats %}
+                            {% set offset = paginator.offset %}
+                            {% for resultat in paginator.iterator %}
+                                {% set offset = offset + 1 %}
                                 <tr>
                                     <td style="text-decoration: none !important;">
                                         <a href="{{ path('resultat_show', {'id': resultat.id}) }}" class="fw-bold mx-3" style="text-decoration: none !important;">
@@ -87,6 +89,11 @@
                             {% endfor %}
                             </tbody>
                         </table>
+                        {{ include('components/pagination.html.twig', {
+                            currentPage: paginator.currentPage,
+                            lastPage: paginator.lastPage,
+                            position: 'right'
+                        }) }}
                     </div>
                 </div>
             </div>
