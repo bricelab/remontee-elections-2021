@@ -37,7 +37,6 @@
                                     <th>Duo Talon.Talata</th>
                                     <th>Votes nuls</th>
                                     <th>Observations</th>
-{#                                    <th></th>#}
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,18 +68,6 @@
                                     <td>{{ resultat.nbVoixDuoTT }}</td>
                                     <td>{{ resultat.nbNuls }}</td>
                                     <td>{{ resultat.observations }}</td>
-{#                                    <td>#}
-{#                                        <a href="{{ path('resultat_show', {'id': resultat.id}) }}" class="btn btn-primary">#}
-{#                                            <i class="bi-eye-fill"></i>#}
-{#                                            Détails#}
-{#                                        </a>#}
-{#                                        {% if is_granted('ROLE_ADMIN') %}#}
-{#                                        <a href="{{ path('resultat_edit', {'id': resultat.id}) }}" class="btn btn-warning btn-sm">#}
-{#                                            <i class="bi-pencil-fill"></i>#}
-{#                                            Modifier#}
-{#                                        </a>#}
-{#                                        {% endif %}#}
-{#                                    </td>#}
                                 </tr>
                             {% else %}
                                 <tr>
