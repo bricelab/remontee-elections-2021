@@ -128,6 +128,7 @@ class ResultatController extends AbstractController
         $header = [
             'Date',
             'Département',
+            'CE',
             'Commune',
             'Arrondissement',
             'Inscrits',
@@ -145,6 +146,7 @@ class ResultatController extends AbstractController
             $data = [
                 $resultat->getCreatedAt()->format('d/m/Y H:i:s'),
                 $resultat->getArrondissement()->getCommune()->getDepartement()->getNom(),
+                $resultat->getArrondissement()->getCommune()->getCe(),
                 $resultat->getArrondissement()->getCommune()->getNom(),
                 $resultat->getArrondissement()->getNom(),
                 $resultat->getArrondissement()->getNbInscrits(),
