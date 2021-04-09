@@ -182,7 +182,7 @@ class ResultatController extends AbstractController
             'RLC',
             'FCBE',
             'Duo Talon.Talata',
-            'Votes nuls',
+            'Bulletins nuls',
             'Observations',
         ];
 
