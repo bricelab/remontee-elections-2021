@@ -30,13 +30,48 @@ class ResultatController extends AbstractController
         $q = $request->query->get('q');
         $paginator = null;
         if ($q) {
-            $paginator = $resultatRepository->searchPaginated($q, $page);
+            if (str_contains($q, '|')) {
+                $items = preg_split('/\|/',$q);
+                $args = [];
+                foreach ($items as $item) {
+                    if (str_starts_with($item, 'dep')) {
+                        $args['dep'] = preg_split('/:/',$item)[1];
+                    }
+                    if (str_starts_with($item, 'com')) {
+                        $args['com'] = preg_split('/:/',$item)[1];
+                    }
+                    if (str_starts_with($item, 'arr')) {
+                        $args['arr'] = preg_split('/:/',$item)[1];
+                    }
+                    if (str_starts_with($item, 'flag')) {
+                        $args['flag'] = true;
+                    }
+                }
+                $paginator = $resultatRepository->searchPaginatedByAll(
+                    $page,
+                    isset($args['dep']) ? $args['dep'] : '',
+                    isset($args['com']) ? $args['com'] : '',
+                    isset($args['arr']) ? $args['arr'] : '',
+                    isset($args['flag']) ? $args['flag'] : '',
+                );
+            } else {
+                if (str_contains($q, ':')) {
+                    $split = preg_split('/:/',$q);
+                    $paginator = match ($split[0]) {
+                        'dep' => $resultatRepository->searchPaginatedByDep($split[1], $page),
+                        'com' => $resultatRepository->searchPaginatedByCom($split[1], $page),
+                        'arr' => $resultatRepository->searchPaginatedByArr($split[1], $page),
+                        'flag' => $resultatRepository->searchPaginatedByWarningFlag($page),
+                        default => $resultatRepository->findAllPaginated($page),
+                    };
+                }
+            }
         } else {
             $paginator = $resultatRepository->findAllPaginated($page);
         }
         return $this->render('resultat/index.html.twig', [
-//            'resultats' => $resultatRepository->findBy([], ['updatedAt' => 'DESC']),
             'paginator' => $paginator,
+            'q' => $q,
         ]);
     }
 
@@ -127,9 +162,10 @@ class ResultatController extends AbstractController
     #[Route('/export-to-csv', name: 'resultat_export_csv', methods: ['GET'])]
     public function exportToCsv(ResultatRepository $repository): Response
     {
-        $resultats = $repository->findAll();
+        $resultats = $repository->findBy([], ['createdAt' => 'DESC']);
 
         $csvWriter = Writer::createFromFileObject(new SplTempFileObject());
+        $csvWriter->setOutputBOM(Writer::BOM_UTF8);
 
         $header = [
             'Date',
@@ -180,10 +216,11 @@ class ResultatController extends AbstractController
         $response = new StreamedResponse();
         $response->headers->set('Content-Encoding', 'none');
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
+        $suffix = date('Y-m-d-H-i-s') . '-' . uniqid();
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'remontees-presidentielles-2021.csv'
+            "export-remontees-par-arrondissement_$suffix.csv"
         );
 
         $response->headers->set('Content-Disposition', $disposition);

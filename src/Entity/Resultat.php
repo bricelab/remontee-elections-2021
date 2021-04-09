@@ -66,6 +66,11 @@ class Resultat
      */
     private ?Arrondissement $arrondissement;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $warningFlag;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -175,6 +180,18 @@ class Resultat
     public function setObservations(?string $observations): self
     {
         $this->observations = $observations;
+
+        return $this;
+    }
+
+    public function getWarningFlag(): ?bool
+    {
+        return $this->warningFlag;
+    }
+
+    public function setWarningFlag(?bool $warningFlag): self
+    {
+        $this->warningFlag = $warningFlag;
 
         return $this;
     }

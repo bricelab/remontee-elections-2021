@@ -40,6 +40,17 @@ class HomeController extends AbstractController
                         $this->addFlash('success', 'Résultat ajouté avec succès !');
 
                         return $this->redirectToRoute('home');
+                    } elseif ($resultat->getNbVotants() <= round($arrondissement->getNbInscrits() * 1.10) || $sommeVoix <= $resultat->getNbVotants() + 5) {
+                        $resultat->setArrondissement($arrondissement);
+                        $resultat->setWarningFlag(true);
+                        $arrondissement->setResultat($resultat);
+
+                        $em->persist($resultat);
+                        $em->flush();
+
+                        $this->addFlash('success', 'Résultat ajouté avec succès !');
+
+                        return $this->redirectToRoute('home');
                     } else {
                         $this->addFlash('error', 'Les données entrées ne sont pas cohérentes !');
                     }

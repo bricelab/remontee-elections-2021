@@ -124,7 +124,7 @@ class ResultatRepository extends ServiceEntityRepository
         return (new OrmPaginator($query))->paginate($page, $pageSize);
     }
 
-    public function searchPaginated(string $q, int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
+    public function searchPaginatedByArr(string $q, int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
     {
         $query = $this->createQueryBuilder('r')
             ->join('r.arrondissement', 'a')
@@ -137,4 +137,71 @@ class ResultatRepository extends ServiceEntityRepository
         return (new OrmPaginator($query))->paginate($page, $pageSize);
     }
 
+    public function searchPaginatedByCom(string $q, int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->join('r.arrondissement', 'a')
+            ->join('a.commune', 'c')
+            ->andWhere('UPPER(c.nom) like :q')
+            ->setParameter('q', '%'. strtoupper($q) .'%')
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return (new OrmPaginator($query))->paginate($page, $pageSize);
+    }
+
+    public function searchPaginatedByDep(string $q, int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->join('r.arrondissement', 'a')
+            ->join('a.commune', 'c')
+            ->join('c.departement', 'd')
+            ->andWhere('UPPER(d.nom) like :q')
+            ->setParameter('q', '%'. strtoupper($q) .'%')
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return (new OrmPaginator($query))->paginate($page, $pageSize);
+    }
+
+    public function searchPaginatedByWarningFlag(int $page = 1, int $pageSize = self::PAGE_SIZE): OrmPaginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere('r.warningFlag IS NOT null')
+            ->andWhere('r.warningFlag = true')
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return (new OrmPaginator($query))->paginate($page, $pageSize);
+    }
+
+    public function searchPaginatedByAll(int $page = 1, string $dep = '', string $com = '', string $arr ='', bool $flag = false, int $pageSize = self::PAGE_SIZE): OrmPaginator
+    {
+        $query = $this->createQueryBuilder('r')
+            ->join('r.arrondissement', 'a')
+            ->join('a.commune', 'c')
+            ->join('c.departement', 'd')
+            ->andWhere('UPPER(d.nom) like :dep')
+            ->andWhere('UPPER(c.nom) like :com')
+            ->andWhere('UPPER(a.nom) like :arr')
+            ->setParameter('dep', '%'. strtoupper($dep) .'%')
+            ->setParameter('com', '%'. strtoupper($com) .'%')
+            ->setParameter('arr', '%'. strtoupper($arr) .'%')
+        ;
+        if ($flag) {
+            $query
+                ->andWhere('r.warningFlag IS NOT null')
+                ->andWhere('r.warningFlag = true')
+            ;
+        }
+        $query
+            ->orderBy('r.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return (new OrmPaginator($query))->paginate($page, $pageSize);
+    }
 }

@@ -67,10 +67,13 @@ class DashboardController extends AbstractController
             $tauxRemonnteeParDep[] = $nbArrondissement > 0 ? round($nbRemontees * 100 / $nbArrondissement) : 0;
 
             $totauxVoixParDep = $repo->totalDesVoixObtenusParDepartement($id)[0];
-            $suffrageExprimes = intval($totauxVoixParDep['nb_voix_rlc']) + intval($totauxVoixParDep['nb_voix_fcbe']) + intval($totauxVoixParDep['nb_voix_duo_tt']);
-            $voixParDuoRLCParDep[] = $suffrageExprimes > 0 ? round(intval($totauxVoixParDep['nb_voix_rlc']) * 100 / $suffrageExprimes, 2) : 0;
-            $voixParDuoFCBEParDep[] = $suffrageExprimes > 0 ? round(intval($totauxVoixParDep['nb_voix_fcbe']) * 100 / $suffrageExprimes, 2) : 0;
-            $voixParDuoTTParDep[] = $suffrageExprimes > 0 ? round(intval($totauxVoixParDep['nb_voix_duo_tt']) * 100 / $suffrageExprimes, 2) : 0;
+//            $suffrageExprimes = intval($totauxVoixParDep['nb_voix_rlc']) + intval($totauxVoixParDep['nb_voix_fcbe']) + intval($totauxVoixParDep['nb_voix_duo_tt']);
+//            $voixParDuoRLCParDep[] = $suffrageExprimes > 0 ? round(intval($totauxVoixParDep['nb_voix_rlc']) * 100 / $suffrageExprimes, 2) : 0;
+            $voixParDuoRLCParDep[] = intval($totauxVoixParDep['nb_voix_rlc']);
+//            $voixParDuoFCBEParDep[] = $suffrageExprimes > 0 ? round(intval($totauxVoixParDep['nb_voix_fcbe']) * 100 / $suffrageExprimes, 2) : 0;
+            $voixParDuoFCBEParDep[] = intval($totauxVoixParDep['nb_voix_fcbe']);
+//            $voixParDuoTTParDep[] = $suffrageExprimes > 0 ? round(intval($totauxVoixParDep['nb_voix_duo_tt']) * 100 / $suffrageExprimes, 2) : 0;
+            $voixParDuoTTParDep[] = intval($totauxVoixParDep['nb_voix_duo_tt']);
 
             $tauxParticipationParDep[] = intval($totauxVoixParDep['nb_inscrits']) > 0 ? round(intval($totauxVoixParDep['nb_votants']) * 100 / intval($totauxVoixParDep['nb_inscrits']), 2) : 0;
         }
@@ -125,13 +128,13 @@ class DashboardController extends AbstractController
                 ],
             ],
         ]);
-        $voixDuos->setOptions([
-            'scales' => [
-                'yAxes' => [
-                    ['ticks' => ['min' => 0, 'max' => 100]],
-                ],
-            ],
-        ]);
+//        $voixDuos->setOptions([
+//            'scales' => [
+//                'yAxes' => [
+//                    ['ticks' => ['min' => 0, 'max' => 100]],
+//                ],
+//            ],
+//        ]);
 
         // Tendances nationales
         $totauxVoix = $repo->totalDesVoixObtenus()[0];

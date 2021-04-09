@@ -94,7 +94,7 @@ class RemonteeType extends AbstractType
                 ],
             ])
             ->add('nbNuls', IntegerType::class, [
-                'label' => 'Votes nuls',
+                'label' => 'Bulletins nuls',
                 'attr' => [
                 ],
                 'constraints' => [
