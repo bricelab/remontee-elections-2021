@@ -6,6 +6,7 @@ use App\Entity\Resultat;
 use App\Form\ResultatType;
 use App\Repository\ResultatRepository;
 use League\Csv\CannotInsertRecord;
+use League\Csv\InvalidArgument;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use SplTempFileObject;
@@ -158,6 +159,7 @@ class ResultatController extends AbstractController
      * @return Response
      * @IsGranted("ROLE_USER")
      * @throws CannotInsertRecord
+     * @throws InvalidArgument
      */
     #[Route('/export-to-csv', name: 'resultat_export_csv', methods: ['GET'])]
     public function exportToCsv(ResultatRepository $repository): Response
@@ -166,6 +168,8 @@ class ResultatController extends AbstractController
 
         $csvWriter = Writer::createFromFileObject(new SplTempFileObject());
         $csvWriter->setOutputBOM(Writer::BOM_UTF8);
+        $csvWriter->setDelimiter(';');
+        $csvWriter->setEnclosure('"');
 
         $header = [
             'Date',
