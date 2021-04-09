@@ -56,7 +56,7 @@ class UtilisateurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'utilisateur_show', methods: ['GET'])]
+    #[Route('/{id}/details', name: 'utilisateur_show', methods: ['GET'])]
     public function show(Utilisateur $utilisateur): Response
     {
         return $this->render('utilisateur/show.html.twig', [
@@ -86,7 +86,7 @@ class UtilisateurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'utilisateur_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'utilisateur_delete', methods: ['POST'])]
     public function delete(Request $request, Utilisateur $utilisateur): Response
     {
         if ($this->isCsrfTokenValid('delete'.$utilisateur->getId(), $request->request->get('_token'))) {

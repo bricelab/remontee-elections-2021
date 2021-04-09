@@ -20,6 +20,14 @@
                     </a>
                 </li>
             {% endif %}
+            {% if is_granted('ROLE_RESPONSABLE') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('update_password') }}">
+                        <span class="bi-lock-fill"></span>
+                        Changer mot de passe
+                    </a>
+                </li>
+            {% endif %}
             {% if is_granted('ROLE_SUPER_ADMIN') %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('departement_index') }}">
