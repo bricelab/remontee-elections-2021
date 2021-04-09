@@ -7,8 +7,8 @@ use App\Entity\Resultat;
 use App\Repository\ArrondissementRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -127,7 +127,7 @@ class ResultatType extends AbstractType
                     'class' => 'mb-3',
                 ],
             ])
-            ->add('warningFlag', RadioType::class, [
+            ->add('warningFlag', CheckboxType::class, [
                 'label' => 'Flag',
                 'required' => false,
                 'attr' => [
