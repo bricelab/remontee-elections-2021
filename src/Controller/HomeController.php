@@ -29,30 +29,35 @@ class HomeController extends AbstractController
             if (isset($extraData['arrondissement']) && $extraData['arrondissement']) {
                 $arrondissement = $repository->findOneBy(['id' => $extraData['arrondissement']]);
                 if ($arrondissement) {
-                    $sommeVoix = $resultat->getNbNuls() + $resultat->getNbVoixDuoTT() + $resultat->getNbVoixFcbe() + $resultat->getNbVoixRlc();
-                    if ($arrondissement->getNbInscrits() >= $resultat->getNbVotants() && $sommeVoix === $resultat->getNbVotants()) {
-                        $resultat->setArrondissement($arrondissement);
-                        $arrondissement->setResultat($resultat);
-
-                        $em->persist($resultat);
-                        $em->flush();
-
-                        $this->addFlash('success', 'Résultat ajouté avec succès !');
-
-                        return $this->redirectToRoute('home');
-                    } elseif ($resultat->getNbVotants() <= round($arrondissement->getNbInscrits() * 1.10) || $sommeVoix <= $resultat->getNbVotants() + 5) {
-                        $resultat->setArrondissement($arrondissement);
-                        $resultat->setWarningFlag(true);
-                        $arrondissement->setResultat($resultat);
-
-                        $em->persist($resultat);
-                        $em->flush();
-
-                        $this->addFlash('success', 'Résultat ajouté avec succès !');
-
-                        return $this->redirectToRoute('home');
+                    $oldResultat = $em->getRepository(Resultat::class)->findOneBy(['arrondissement' => $arrondissement]);
+                    if ($oldResultat) {
+                        $this->addFlash('error', 'Les résultats de cet arrondissement ont déjà été remontés !');
                     } else {
-                        $this->addFlash('error', 'Les données entrées ne sont pas cohérentes !');
+                        $sommeVoix = $resultat->getNbNuls() + $resultat->getNbVoixDuoTT() + $resultat->getNbVoixFcbe() + $resultat->getNbVoixRlc();
+                        if ($arrondissement->getNbInscrits() >= $resultat->getNbVotants() && $sommeVoix === $resultat->getNbVotants()) {
+                            $resultat->setArrondissement($arrondissement);
+                            $arrondissement->setResultat($resultat);
+
+                            $em->persist($resultat);
+                            $em->flush();
+
+                            $this->addFlash('success', 'Résultat ajouté avec succès !');
+
+                            return $this->redirectToRoute('home');
+                        } elseif ($resultat->getNbVotants() <= round($arrondissement->getNbInscrits() * 1.10) || $sommeVoix <= $resultat->getNbVotants() + 5) {
+                            $resultat->setArrondissement($arrondissement);
+                            $resultat->setWarningFlag(true);
+                            $arrondissement->setResultat($resultat);
+
+                            $em->persist($resultat);
+                            $em->flush();
+
+                            $this->addFlash('success', 'Résultat ajouté avec succès !');
+
+                            return $this->redirectToRoute('home');
+                        } else {
+                            $this->addFlash('error', 'Les données entrées ne sont pas cohérentes !');
+                        }
                     }
                 } else {
                     $this->addFlash('error', 'Choisissez un arrondissement valide svp !');
@@ -102,6 +107,15 @@ class HomeController extends AbstractController
                 $em->flush();
 
                 $this->addFlash('success', 'Résultat modifié avec succès !');
+
+                return $this->redirectToRoute('home');
+            } elseif ($resultat->getNbVotants() <= round($arrondissement->getNbInscrits() * 1.10) || $sommeVoix <= $resultat->getNbVotants() + 5) {
+                $resultat->setWarningFlag(true);
+
+                $em->persist($resultat);
+                $em->flush();
+
+                $this->addFlash('success', 'Résultat ajouté avec succès !');
 
                 return $this->redirectToRoute('home');
             } else {
