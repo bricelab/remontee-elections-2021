@@ -2,15 +2,13 @@
 
 namespace App\Command;
 
-use App\Entity\Utilisateur;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UtilisateurRepository;
+use App\Services\CreateNewAccount;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserCreateCommand extends Command
 {
@@ -18,39 +16,25 @@ class UserCreateCommand extends Command
     protected static $defaultDescription = 'Add a short description for your command';
 
     /**
-     * Entity manager
-     *
-     * @var EntityManagerInterface
+     * @var CreateNewAccount
      */
-    private EntityManagerInterface $em;
-
+    private CreateNewAccount $createNewAccount;
     /**
-     * Kernel
-     *
-     * @var KernelInterface
+     * @var UtilisateurRepository
      */
-    private KernelInterface $kernel;
+    private UtilisateurRepository $repository;
 
-    /**
-     * User password encoder
-     *
-     * @var UserPasswordEncoderInterface
-     */
-    private UserPasswordEncoderInterface $encoder;
 
     /**
      * UserCreateCommand constructor.
-     * @param EntityManagerInterface $em
-     * @param KernelInterface $kernel
-     * @param UserPasswordEncoderInterface $encoder
+     * @param CreateNewAccount $createNewAccount
+     * @param UtilisateurRepository $repository
      */
-    public function __construct(EntityManagerInterface $em, KernelInterface $kernel, UserPasswordEncoderInterface $encoder)
+    public function __construct(CreateNewAccount $createNewAccount, UtilisateurRepository $repository)
     {
-        $this->em = $em;
-        $this->kernel = $kernel;
-        $this->encoder = $encoder;
-
         parent::__construct();
+        $this->createNewAccount = $createNewAccount;
+        $this->repository = $repository;
     }
 
     protected function configure()
@@ -76,7 +60,7 @@ class UserCreateCommand extends Command
 
         if ($email) {
             $io->note(sprintf('Checking if user with email "%s" exists', $email));
-            $user = $this->em->getRepository(Utilisateur::class)->findOneBy(["email" => $email]);
+            $user = $this->repository->findOneBy(["email" => $email]);
             if($user){
                 $io->error(sprintf('User with email "%s" already exists', $email));
                 return Command::FAILURE;
@@ -85,17 +69,10 @@ class UserCreateCommand extends Command
                 $io->note(sprintf('User with email "%s" doesn\'t exist', $email));
                 $io->note(sprintf('Creating user with email "%s" ', $email));
 
-                $user = new Utilisateur();
-                $user->setEmail($email);
-                $user->setNom($nom)->setPrenoms($prenom);
-                $user->setPassword($this->encoder->encodePassword($user, $password));
                 if (!$role) {
                     $role = 'ROLE_SUPERVISEUR';
                 }
-                $user->setRoles([$role]);
-
-                $this->em->persist($user);
-                $this->em->flush();
+                $this->createNewAccount->create($email, $password, $role, $nom, $prenom);
             }
             $io->success(sprintf('User with email "%s" has been created successfully.', $email));
 
