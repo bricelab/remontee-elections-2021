@@ -8,11 +8,18 @@ use App\Form\ModifierRemonteeStartType;
 use App\Form\RemonteeType;
 use App\Repository\ArrondissementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class HomeController
+ * @package App\Controller
+ * @Security("is_granted('ROLE_SUPERVISEUR')")
+ */
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
@@ -127,4 +134,5 @@ class HomeController extends AbstractController
             'arrondissement' => $arrondissement,
         ]);
     }
+//* @Security("is_granted('ROLE_SUPERVISEUR') or is_granted('ROLE_DASHBOARD')")
 }

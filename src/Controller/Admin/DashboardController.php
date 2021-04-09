@@ -15,7 +15,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 /**
  * Class DashboardController
  * @package App\Controller\Admin
- * @IsGranted("ROLE_USER")
+ * @IsGranted("ROLE_DASHBOARD")
  */
 #[Route('/admin')]
 class DashboardController extends AbstractController

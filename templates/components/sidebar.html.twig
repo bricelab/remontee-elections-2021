@@ -4,13 +4,21 @@
             <img src="/program.jpg" width="50%" height=""  alt="portrait"/>
         </div>
         <ul class="nav flex-column">
-            {% if is_granted('ROLE_USER') %}
+            {% if is_granted('ROLE_RESPONSABLE') %}
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ path('dashboard') }}">
                     <span class="bi-grid-fill"></span>
                     Tableau de bord
                 </a>
             </li>
+            {% endif %}
+            {% if is_granted('ROLE_RESPONSABLE') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('resultat_index') }}">
+                        <span class="bi-lock-fill"></span>
+                        Remontée des résultats
+                    </a>
+                </li>
             {% endif %}
             {% if is_granted('ROLE_SUPER_ADMIN') %}
             <li class="nav-item">
@@ -29,14 +37,6 @@
                 <a class="nav-link" href="{{ path('arrondissement_index') }}">
                     <span class="bi-lock-fill"></span>
                     Arrondissements
-                </a>
-            </li>
-            {% endif %}
-            {% if is_granted('ROLE_USER') %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('resultat_index') }}">
-                    <span class="bi-lock-fill"></span>
-                    Remontée des résultats
                 </a>
             </li>
             {% endif %}

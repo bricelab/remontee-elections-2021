@@ -100,6 +100,13 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
             return new RedirectResponse($targetPath);
         }
 
+        /** @var Utilisateur $user */
+        $user = $token->getUser();
+
+        if (in_array('ROLE_SUPERVISEUR', $user->getRoles())) {
+            return new RedirectResponse($this->urlGenerator->generate('home'));
+        }
+
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         return new RedirectResponse($this->urlGenerator->generate('dashboard'));
     }

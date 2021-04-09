@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class ResultatController
  * @package App\Controller\Admin
- * @IsGranted("ROLE_USER")
+ * @IsGranted("ROLE_RESPONSABLE")
  */
 #[Route('/admin/resultat')]
 class ResultatController extends AbstractController
@@ -79,7 +79,6 @@ class ResultatController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      */
     #[Route('/new', name: 'resultat_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -115,7 +114,6 @@ class ResultatController extends AbstractController
      * @param Request $request
      * @param Resultat $resultat
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      */
     #[Route('/{id}/edit', name: 'resultat_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Resultat $resultat): Response
@@ -139,7 +137,6 @@ class ResultatController extends AbstractController
      * @param Request $request
      * @param Resultat $resultat
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      */
     #[Route('/{id}', name: 'resultat_delete', methods: ['DELETE'])]
     public function delete(Request $request, Resultat $resultat): Response
@@ -157,7 +154,7 @@ class ResultatController extends AbstractController
     /**
      * @param ResultatRepository $repository
      * @return Response
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN")
      * @throws CannotInsertRecord
      * @throws InvalidArgument
      */

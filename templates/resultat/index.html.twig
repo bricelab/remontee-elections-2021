@@ -4,11 +4,13 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Remontée des résultats par arrondissement</h1>
         <div class="btn-toolbar mb-2 pt-2">
+            {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('resultat_export_csv') }}" class="btn btn-primary">
                 <i class="bi-save2 fw-bold"></i>
                 Exporter
             </a>
-            {% if is_granted('ROLE_ADMIN') %}
+            {% endif %}
+            {% if is_granted('ROLE_RESPONSABLE') %}
             <a href="{{ path('resultat_new') }}" class="btn btn-success ms-2 me-2">
                 <i class="bi-plus fw-bold"></i>
                 Nouveau
@@ -53,7 +55,7 @@
                                             <i class="bi-eye-fill"></i>
 {#                                            {{ loop.index }}#}
                                         </a>
-                                        {% if is_granted('ROLE_ADMIN') %}
+                                        {% if is_granted('ROLE_RESPONSABLE') %}
                                             <a href="{{ path('resultat_edit', {'id': resultat.id}) }}" class="fw-bold" style="text-decoration: none !important;">
                                                 <i class="bi-pencil-fill"></i>
                                                 {#                                            Modifier#}

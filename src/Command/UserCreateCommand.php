@@ -90,7 +90,7 @@ class UserCreateCommand extends Command
                 $user->setNom($nom)->setPrenoms($prenom);
                 $user->setPassword($this->encoder->encodePassword($user, $password));
                 if (!$role) {
-                    $role = 'ROLE_USER';
+                    $role = 'ROLE_SUPERVISEUR';
                 }
                 $user->setRoles([$role]);
 

@@ -19,12 +19,14 @@ class UtilisateurType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
+                'required' => false,
                 'attr' => [
                     'class' => 'mb-3',
                 ]
             ])
             ->add('prenoms', TextType::class, [
                 'label' => 'Prénom (s)',
+                'required' => false,
                 'attr' => [
                     'class' => 'mb-3',
                 ]
@@ -57,10 +59,14 @@ class UtilisateurType extends AbstractType
                 'attr' => [
                     'class' => 'mb-3',
                 ],
+                'required' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'choices' => [
-                    'ROLE_USER' => 'ROLE_USER',
+//                    'ROLE_USER' => 'ROLE_USER',
+                    'ROLE_DASHBOARD' => 'ROLE_DASHBOARD',
+                    'ROLE_SUPERVISEUR' => 'ROLE_SUPERVISEUR',
+                    'ROLE_RESPONSABLE' => 'ROLE_RESPONSABLE',
                     'ROLE_ADMIN' => 'ROLE_ADMIN',
                     'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
                 ],
