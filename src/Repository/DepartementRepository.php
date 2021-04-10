@@ -22,8 +22,7 @@ class DepartementRepository extends ServiceEntityRepository
     public function findAllIdList()
     {
         return $this->createQueryBuilder('d')
-            ->select('d.id')
-            ->addSelect('d.nom')
+            ->select('d.id', 'd.nom', 'd.nbInscrits AS nb_inscrits')
             ->orderBy('d.nom', 'ASC')
             ->getQuery()
             ->getResult()

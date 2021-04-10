@@ -16,13 +16,17 @@
                 <td>{{ departement.nom }}</td>
             </tr>
             <tr>
-                <th>CreatedAt</th>
-                <td>{{ departement.createdAt ? departement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Nombre d'inscrits</th>
+                <td>{{ departement.nbInscrits|number_format(0, ',', ' ') }}</td>
             </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ departement.updatedAt ? departement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+{#            <tr>#}
+{#                <th>Ajouté le</th>#}
+{#                <td>{{ departement.createdAt ? departement.createdAt|date('Y-m-d H:i:s') : '' }}</td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <th>UpdatedAt</th>#}
+{#                <td>{{ departement.updatedAt ? departement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
+{#            </tr>#}
         </tbody>
     </table>
 

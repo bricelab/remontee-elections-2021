@@ -81,9 +81,32 @@ class ResultatRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = <<<EOT
         SELECT SUM(r.nb_votants) AS nb_votants, SUM(r.nb_voix_rlc) AS nb_voix_rlc,
-        SUM(r.nb_voix_fcbe) AS nb_voix_fcbe, SUM(r.nb_voix_duo_tt) AS nb_voix_duo_tt, SUM(a.nb_inscrits) AS nb_inscrits 
-        FROM resultat r, arrondissement a 
+        SUM(r.nb_voix_fcbe) AS nb_voix_fcbe, SUM(r.nb_voix_duo_tt) AS nb_voix_duo_tt
+        FROM resultat r, arrondissement a, commune c, departement d 
         WHERE r.arrondissement_id = a.id 
+        AND a.commune_id = c.id 
+        AND c.departement_id = d.id 
+        EOT;
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([]);
+
+        return $stmt->fetchAllAssociative();
+    }
+
+    /**
+     * @return array
+     * @throws DriverException|Exception
+     */
+    public function totalDesInscrits(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = <<<EOT
+        SELECT SUM(l.nb_inscrits) AS nb_inscrits
+        FROM (SELECT DISTINCT d.nb_inscrits AS nb_inscrits 
+        FROM resultat r, arrondissement a, commune c, departement d 
+        WHERE r.arrondissement_id = a.id 
+        AND a.commune_id = c.id 
+        AND c.departement_id = d.id) l 
         EOT;
         $stmt = $conn->prepare($sql);
         $stmt->execute([]);
@@ -101,7 +124,7 @@ class ResultatRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $sql = <<<EOT
         SELECT SUM(r.nb_votants) AS nb_votants, SUM(r.nb_voix_rlc) AS nb_voix_rlc, 
-        SUM(r.nb_voix_fcbe) AS nb_voix_fcbe, SUM(r.nb_voix_duo_tt) AS nb_voix_duo_tt, SUM(a.nb_inscrits) AS nb_inscrits 
+        SUM(r.nb_voix_fcbe) AS nb_voix_fcbe, SUM(r.nb_voix_duo_tt) AS nb_voix_duo_tt, SUM(d.nb_inscrits) AS nb_inscrits 
         FROM resultat r, arrondissement a, commune c, departement d 
         WHERE r.arrondissement_id = a.id 
         AND a.commune_id = c.id 

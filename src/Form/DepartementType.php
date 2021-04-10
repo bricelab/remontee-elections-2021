@@ -13,6 +13,7 @@ class DepartementType extends AbstractType
     {
         $builder
             ->add('nom')
+            ->add('nbInscrits')
         ;
     }
 

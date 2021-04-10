@@ -18,7 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class HomeController
  * @package App\Controller
- * @Security("is_granted('ROLE_SUPERVISEUR')")
  */
 class HomeController extends AbstractController
 {

@@ -10,8 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
+                <th>Nombre d'inscrits</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,8 +19,7 @@
             <tr>
                 <td>{{ departement.id }}</td>
                 <td>{{ departement.nom }}</td>
-                <td>{{ departement.createdAt ? departement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ departement.updatedAt ? departement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ departement.nbInscrits|number_format(0, ',', ' ') }}</td>
                 <td>
                     <a href="{{ path('departement_show', {'id': departement.id}) }}">show</a>
                     <a href="{{ path('departement_edit', {'id': departement.id}) }}">edit</a>

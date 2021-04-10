@@ -51,6 +51,7 @@ class DashboardController extends AbstractController
 
         // Taux de remontée et de participation par département
         $departementIds = $doctrine->getRepository(Departement::class)->findAllIdList();
+//        dd($departementIds);
         $label = [];
         $tauxRemonnteeParDep = [];
         $voixParDuoTTParDep = [];
@@ -75,7 +76,7 @@ class DashboardController extends AbstractController
 //            $voixParDuoTTParDep[] = $suffrageExprimes > 0 ? round(intval($totauxVoixParDep['nb_voix_duo_tt']) * 100 / $suffrageExprimes, 2) : 0;
             $voixParDuoTTParDep[] = intval($totauxVoixParDep['nb_voix_duo_tt']);
 
-            $tauxParticipationParDep[] = intval($totauxVoixParDep['nb_inscrits']) > 0 ? round(intval($totauxVoixParDep['nb_votants']) * 100 / intval($totauxVoixParDep['nb_inscrits']), 2) : 0;
+            $tauxParticipationParDep[] = intval($totauxVoixParDep['nb_inscrits']) > 0 ? round(intval($totauxVoixParDep['nb_votants']) * 100 / intval($departementId['nb_inscrits']), 2) : 0;
         }
         $tauxRemonntee = $chartBuilder->createChart(Chart::TYPE_BAR);
         $tauxRemonntee->setData([
@@ -138,6 +139,8 @@ class DashboardController extends AbstractController
 
         // Tendances nationales
         $totauxVoix = $repo->totalDesVoixObtenus()[0];
+        $totalDesInscrits = $repo->totalDesInscrits()[0];
+//        dd($totauxVoix, $totalDesInscrits);
         $suffrageExprimesTotal = intval($totauxVoix['nb_voix_rlc']) + intval($totauxVoix['nb_voix_fcbe']) + intval($totauxVoix['nb_voix_duo_tt']);
         $tendancesNationalesData = [
             $suffrageExprimesTotal > 0 ? round(intval($totauxVoix['nb_voix_rlc']) * 100 / $suffrageExprimesTotal) : 0,
@@ -169,7 +172,7 @@ class DashboardController extends AbstractController
 
         // Taux de participation
 //        dd($totauxVoix);
-        $tauxParticipationData = intval($totauxVoix['nb_inscrits']) > 0 ? round(intval($totauxVoix['nb_votants']) * 100 / intval($totauxVoix['nb_inscrits']), 2) : 0;
+        $tauxParticipationData = intval($totalDesInscrits['nb_inscrits']) > 0 ? round(intval($totauxVoix['nb_votants']) * 100 / intval($totalDesInscrits['nb_inscrits']), 2) : 0;
         $tauxAbstentionData = 100 - $tauxParticipationData;
         $tauxParticipation = $chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
         $tauxParticipation->setData([
@@ -190,7 +193,7 @@ class DashboardController extends AbstractController
                 ],
             ],
         ]);
-        /** @var Resultat[]|null $dernieresRemontees */
+//        /** @var Resultat[]|null $dernieresRemontees */
 //        $dernieresRemontees = $repo->findBy([], ['createdAt' => 'DESC'], 20, 0);
         return $this->render('dashboard/index.html.twig', [
 //            'chart' => $chart,

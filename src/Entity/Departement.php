@@ -25,6 +25,11 @@ class Departement
      */
     private ?string $nom;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbInscrits;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,5 +50,17 @@ class Departement
     public function __toString(): string
     {
         return (string) $this->nom;
+    }
+
+    public function getNbInscrits(): ?int
+    {
+        return $this->nbInscrits;
+    }
+
+    public function setNbInscrits(?int $nbInscrits): self
+    {
+        $this->nbInscrits = $nbInscrits;
+
+        return $this;
     }
 }

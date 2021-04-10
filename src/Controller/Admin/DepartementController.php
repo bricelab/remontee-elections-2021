@@ -23,7 +23,7 @@ class DepartementController extends AbstractController
     public function index(DepartementRepository $departementRepository): Response
     {
         return $this->render('departement/index.html.twig', [
-            'departements' => $departementRepository->findAll(),
+            'departements' => $departementRepository->findBy([], ['nom' => 'ASC']),
         ]);
     }
 
