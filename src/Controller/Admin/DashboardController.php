@@ -143,9 +143,9 @@ class DashboardController extends AbstractController
 //        dd($totauxVoix, $totalDesInscrits);
         $suffrageExprimesTotal = intval($totauxVoix['nb_voix_rlc']) + intval($totauxVoix['nb_voix_fcbe']) + intval($totauxVoix['nb_voix_duo_tt']);
         $tendancesNationalesData = [
-            $suffrageExprimesTotal > 0 ? round(intval($totauxVoix['nb_voix_rlc']) * 100 / $suffrageExprimesTotal) : 0,
-            $suffrageExprimesTotal > 0 ? round(intval($totauxVoix['nb_voix_fcbe']) * 100 / $suffrageExprimesTotal) : 0,
-            $suffrageExprimesTotal > 0 ? round(intval($totauxVoix['nb_voix_duo_tt']) * 100 / $suffrageExprimesTotal) : 0
+            $suffrageExprimesTotal > 0 ? round(intval($totauxVoix['nb_voix_rlc']) * 100 / $suffrageExprimesTotal,2) : 0,
+            $suffrageExprimesTotal > 0 ? round(intval($totauxVoix['nb_voix_fcbe']) * 100 / $suffrageExprimesTotal, 2) : 0,
+            $suffrageExprimesTotal > 0 ? round(intval($totauxVoix['nb_voix_duo_tt']) * 100 / $suffrageExprimesTotal, 2) : 0
         ];
 //        dd($totauxVoix, $tendancesNationalesData, $suffrageExprimesTotal);
         $tendancesNationales = $chartBuilder->createChart(Chart::TYPE_PIE);
